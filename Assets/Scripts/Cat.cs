@@ -5,7 +5,7 @@ public class Cat : MonoBehaviour
     public const float speed = 10;
     public const float rotateSpeed = 60;
     public NeuralNetwork Brain = new NeuralNetwork(6, 3);
-    public int ate = 0;
+    public int score = 0;
 
     public bool dead = false;
 
@@ -57,13 +57,13 @@ public class Cat : MonoBehaviour
     {
         if (collision.gameObject.tag == "Food")
         {
-            ate++;
-            Destroy(collision.gameObject);
+            score++;
+            collision.gameObject.transform.position = Vector3.up * 100;
         }
 
         if (collision.gameObject.tag == "Wall")
         {
-            ate--;
+            score -= 2;
             dead = true;
         }
     }

@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class NeuralNetwork
 {
-    private Neuron[] InputLayer;
-    private Neuron[][] HiddenLayer;
-    private Neuron[] OutputLayer;
+    private INeuron[] InputLayer;
+    private INeuron[][] HiddenLayer;
+    private INeuron[] OutputLayer;
 
     public readonly int inputAmount = 2;
     public readonly int[] hiddenAmount = { 5, 5 };
@@ -23,21 +23,21 @@ public class NeuralNetwork
     {
         this.inputAmount = inputAmount;
         this.outputAmount = outputAmount;
-        InputLayer = new Neuron[inputAmount];
+        InputLayer = new INeuron[inputAmount];
         for (int i = 0; i < InputLayer.Length; i++)
-            InputLayer[i] = new Neuron();
+            InputLayer[i] = new LinearNeuron();
 
-        HiddenLayer = new Neuron[hiddenAmount.Length][];
+        HiddenLayer = new INeuron[hiddenAmount.Length][];
         for (int i = 0; i < hiddenAmount.Length; i++)
         {
-            HiddenLayer[i] = new Neuron[hiddenAmount[i]];
+            HiddenLayer[i] = new INeuron[hiddenAmount[i]];
             for (int j = 0; j < HiddenLayer[i].Length; j++)
-                HiddenLayer[i][j] = new Neuron();
+                HiddenLayer[i][j] = new LinearNeuron();
         }
 
-        OutputLayer = new Neuron[outputAmount];
+        OutputLayer = new INeuron[outputAmount];
         for (int i = 0; i < OutputLayer.Length; i++)
-            OutputLayer[i] = new Neuron();
+            OutputLayer[i] = new HeavisideStepNeuron();
 
         weights = new float[1 + hiddenAmount.Length][];
         weights[0] = new float[inputAmount * hiddenAmount[0]];
@@ -90,16 +90,16 @@ public class NeuralNetwork
         return results;
     }
 
-    const float mutatePower = 0.3f;
-    const float mutateAmount = 10f;
-    public NeuralNetwork Mutate()
+    const float stdMutatePower = 0.3f;
+    const float stdMutateAmount = 10f;
+    public NeuralNetwork Mutate(float mutatePower = stdMutatePower, float mutateAmount = stdMutateAmount)
     {
         float[][] mutated_weights = weights;
         for (int i = 0; i < mutateAmount; i++)
         {
             int x = Random.Range(0, mutated_weights.Length);
             int y = Random.Range(0, mutated_weights[x].Length);
-            mutated_weights[x][y] += mutatePower * ((Random.value > 0.5f) ? -1 : 1);
+            mutated_weights[x][y] += Random.Range(-mutatePower, mutatePower);// * ((Random.value > 0.5f) ? -1 : 1);
         }
 
         return new NeuralNetwork(mutated_weights, inputAmount, outputAmount);

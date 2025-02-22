@@ -9,8 +9,8 @@ public class Timer : MonoBehaviour
         text = GetComponent<TMP_Text>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        text.text = ((int)Time.time / 60) + ":" + ((int)Time.time % 60).ToString("00");
+        text.text = (int)Time.time / 3600 + ":" + ((int)Time.time / 60 % 60).ToString("00") + ":" + ((int)Time.time % 60).ToString("00");
     }
 }

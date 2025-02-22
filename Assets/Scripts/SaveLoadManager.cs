@@ -8,17 +8,21 @@ public class SaveLoadManager : MonoBehaviour
     [SerializeField] private string path = "C:/NN/save.nns";
     [SerializeField] CatDropper[] catDroppers;
 
-    //TODO: Load weights and send it to CatDroppers
     private void Start()
     {
+        if (!File.Exists(path))
+        {
+            foreach (CatDropper cd in catDroppers)
+                cd.Load();
+
+            return;
+        }
+
         string[] droppers = File.ReadAllText(path).Split('\r');
         string[][] cats = droppers.Select(dropper => dropper.Split('\n')).ToArray();
-        Debug.Log(droppers.Aggregate((s1, s2) => s1 + "\n__________________________" + s2));
-        //string[][][] layers = cats.Select(cat => cat.Split('*')).ToArray();
         for (int i = 0; i < catDroppers.Length; i++)
         {
-            //catDroppers[i].Run();
-
+            catDroppers[i].Load(cats[i]);
         }
     }
 
@@ -41,5 +45,10 @@ public class SaveLoadManager : MonoBehaviour
         }
 
         File.WriteAllText(path, sb.ToString());
+    }
+
+    private void OnApplicationQuit()
+    {
+        Save();
     }
 }
