@@ -9,12 +9,15 @@ using Random = System.Random;
 
 public class DinoRoom : MonoBehaviour
 {
+    [SerializeField] private Sprite Pterodaktyl;
+    [Space]
+
     [SerializeField] private TMP_Text genText;
     [SerializeField] private TMP_Text ScoreText;
     [SerializeField] private int generation = 0;
     List<Dino> dinos = new ();
     static List<Transform> obstacles = new();
-    [SerializeField] float speed;
+    public static float speed;
     private int maxScore = 0;
 
     [Space]
@@ -25,10 +28,20 @@ public class DinoRoom : MonoBehaviour
     [SerializeField] Transform obstacle;
     [SerializeField] Dino dinoPrefab;
 
+    System.Random rnd = new System.Random();
+
     public static float NearestObstacleX()
     {
         if (obstacles.Count > 0)
             return obstacles.Min(ob => ob.position.x);
+
+        return 1000;
+    }
+
+    public static float NearestObstacleType()
+    {
+        if (obstacles.Count > 0)
+            return obstacles.OrderBy(ob => ob.position.x).First().position.y > 100 ? 1 : 0;
 
         return 1000;
     }
@@ -38,7 +51,6 @@ public class DinoRoom : MonoBehaviour
         for(int i = 0; i < 50; i++)
             dinos.Add(Instantiate(dinoPrefab, new Vector3(100, 100, 0), Quaternion.identity, transform));
 
-        System.Random rnd = new System.Random();
         foreach (Dino d in dinos)
             d.GetComponent<Image>().color = new Color((float)rnd.NextDouble(), (float)rnd.NextDouble(), (float)rnd.NextDouble());
 
@@ -67,7 +79,7 @@ public class DinoRoom : MonoBehaviour
             dinos[i].dead = false;
             dinos[i].rb.simulated = true;
             dinos[i].score = 0;
-            dinos[i].Brain = bestBrains.ElementAt(i / 2).Mutate();
+            dinos[i].Brain = bestBrains.ElementAt(i / 2).Mutate(mutationPower, mutationAmount);
             dinos[i].GetComponent<Image>().color = bestColors.ElementAt(i / 2);
         }
 
@@ -103,7 +115,14 @@ public class DinoRoom : MonoBehaviour
     {
         while (true)
         {
-            obstacles.Add(Instantiate(obstacle, new Vector3(1080, 100, 0), Quaternion.identity, transform));
+            if (rnd.Next(2) == 0)
+                obstacles.Add(Instantiate(obstacle, new Vector3(1080, 100, 0), Quaternion.identity, transform));
+            else
+            {
+                Transform tr = Instantiate(obstacle, new Vector3(1080, 200, 0), Quaternion.identity, transform);
+                obstacles.Add(tr);
+                tr.GetComponent<Image>().sprite = Pterodaktyl;
+            }
             yield return new WaitForSeconds(2);
         }
     }

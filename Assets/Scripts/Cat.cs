@@ -37,7 +37,7 @@ public class Cat : MonoBehaviour
             else
             {
                 inputs[i * 2] = 0.7f;
-                inputs[i * 2 +1] = 40 / 40;
+                inputs[i * 2 + 1] = 40 / 40;
             }
         }
 

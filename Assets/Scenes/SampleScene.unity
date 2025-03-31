@@ -895,7 +895,7 @@ MonoBehaviour:
   cat: {fileID: 933150300172192409, guid: fefb77e5763867647a62361981da7afa, type: 3}
   GenerationAmount: 10
   MinGenerationAmount: 5
-  GenerationLayers: 10
+  GenerationLayers: 1
   RunTime: 20
   mutationPower: 0.3
   mutationAmount: 10
@@ -934,9 +934,9 @@ MonoBehaviour:
   cat: {fileID: 933150300172192409, guid: fefb77e5763867647a62361981da7afa, type: 3}
   GenerationAmount: 10
   MinGenerationAmount: 5
-  GenerationLayers: 10
+  GenerationLayers: 1
   RunTime: 20
-  mutationPower: 0.3
+  mutationPower: 0.1
   mutationAmount: 10
   foodDropper: {fileID: 356407222}
   generation: []
@@ -1111,7 +1111,7 @@ MonoBehaviour:
   cat: {fileID: 933150300172192409, guid: fefb77e5763867647a62361981da7afa, type: 3}
   GenerationAmount: 10
   MinGenerationAmount: 5
-  GenerationLayers: 10
+  GenerationLayers: 1
   RunTime: 20
   mutationPower: 0.6
   mutationAmount: 10
@@ -1612,7 +1612,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &439180712
 Transform:
   m_ObjectHideFlags: 0
@@ -1975,7 +1975,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &527871186
 Transform:
   m_ObjectHideFlags: 0
@@ -2338,7 +2338,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &576566276
 Transform:
   m_ObjectHideFlags: 0
@@ -2542,7 +2542,7 @@ MonoBehaviour:
   cat: {fileID: 933150300172192409, guid: fefb77e5763867647a62361981da7afa, type: 3}
   GenerationAmount: 10
   MinGenerationAmount: 5
-  GenerationLayers: 10
+  GenerationLayers: 1
   RunTime: 20
   mutationPower: 0.3
   mutationAmount: 10
@@ -2596,7 +2596,7 @@ MonoBehaviour:
   cat: {fileID: 933150300172192409, guid: fefb77e5763867647a62361981da7afa, type: 3}
   GenerationAmount: 10
   MinGenerationAmount: 5
-  GenerationLayers: 10
+  GenerationLayers: 1
   RunTime: 20
   mutationPower: 0.1
   mutationAmount: 10
@@ -2709,7 +2709,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &640462492
 Transform:
   m_ObjectHideFlags: 0
@@ -3311,7 +3311,7 @@ MonoBehaviour:
   cat: {fileID: 933150300172192409, guid: fefb77e5763867647a62361981da7afa, type: 3}
   GenerationAmount: 10
   MinGenerationAmount: 5
-  GenerationLayers: 10
+  GenerationLayers: 1
   RunTime: 20
   mutationPower: 0.1
   mutationAmount: 10
@@ -3736,7 +3736,7 @@ MonoBehaviour:
   cat: {fileID: 933150300172192409, guid: fefb77e5763867647a62361981da7afa, type: 3}
   GenerationAmount: 10
   MinGenerationAmount: 5
-  GenerationLayers: 10
+  GenerationLayers: 1
   RunTime: 20
   mutationPower: 0.4
   mutationAmount: 10
@@ -4380,7 +4380,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1223328008
 Transform:
   m_ObjectHideFlags: 0
@@ -6003,7 +6003,7 @@ MonoBehaviour:
   cat: {fileID: 933150300172192409, guid: fefb77e5763867647a62361981da7afa, type: 3}
   GenerationAmount: 10
   MinGenerationAmount: 5
-  GenerationLayers: 10
+  GenerationLayers: 1
   RunTime: 20
   mutationPower: 0.1
   mutationAmount: 10
@@ -6641,7 +6641,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1667349412
 Transform:
   m_ObjectHideFlags: 0
@@ -6680,7 +6680,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1699948197
 Transform:
   m_ObjectHideFlags: 0
@@ -6783,7 +6783,7 @@ MonoBehaviour:
   cat: {fileID: 933150300172192409, guid: fefb77e5763867647a62361981da7afa, type: 3}
   GenerationAmount: 10
   MinGenerationAmount: 5
-  GenerationLayers: 10
+  GenerationLayers: 1
   RunTime: 20
   mutationPower: 0.5
   mutationAmount: 10
@@ -7431,7 +7431,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1878262923
 Transform:
   m_ObjectHideFlags: 0

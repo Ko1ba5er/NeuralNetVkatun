@@ -21,6 +21,11 @@ public class CatDropper : MonoBehaviour
     public List<Cat> generation;
     private float genStartTime = 1000;
 
+    private void Start()
+    {
+        Load();
+    }
+
     public void Load(string[] brains = null)
     {
         generation = new List<Cat>();
@@ -64,7 +69,8 @@ public class CatDropper : MonoBehaviour
         if (!isLoaded)
         {
             if (Time.time >= 10)
-                Load();
+                isLoaded = true;
+
             return;
         }
 

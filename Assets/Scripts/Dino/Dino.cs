@@ -5,7 +5,7 @@ public class Dino : MonoBehaviour
     public const float speed = 10;
     public const float rotateSpeed = 60;
     [SerializeField]
-    public NeuralNetwork Brain = new NeuralNetwork(1, 1);
+    public NeuralNetwork Brain = new NeuralNetwork(3, 2);
     [SerializeField]
     private float[] results;
     public int score = 0;
@@ -25,23 +25,28 @@ public class Dino : MonoBehaviour
         if (dead)
             return;
 
-        //inputs[0] = 0;//;transform.position.y / 200;
-        float[] inputs = new float[] { DinoRoom.NearestObstacleX() / 1000 };
+        float[] inputs = new float[] { DinoRoom.NearestObstacleX() / 1000, DinoRoom.speed / 1200, DinoRoom.NearestObstacleType() };
         results = Brain.proccess(inputs);
-        //inputs[2] = 0;
 
         if (results[0] >= 0f)
             jump();
 
-        //if (results[1] == 1f)
-        //    crawl();
+        if (results[1] >= 0f && onGround)
+            transform.localScale = new Vector3(1f, 0.5f, 1f);
+        else
+            transform.localScale = Vector3.one;
     }
 
-    //private void Update()
-    //{
-    //    if (Input.GetKey(KeyCode.Space))
-    //        jump();
-    //}
+    private void Update()
+    {
+        //if (Input.GetKey(KeyCode.Space))
+        //    jump();
+
+        //if (Input.GetKey(KeyCode.S) && onGround)
+        //    transform.localScale = new Vector3(1f, 0.5f, 1f);
+        //else
+        //    transform.localScale = Vector3.one;
+    }
 
     private float Lastjumptime = 0;
 
@@ -55,11 +60,6 @@ public class Dino : MonoBehaviour
         }
     }
 
-    private void crawl()
-    {
-
-    }
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Wall")
@@ -68,12 +68,16 @@ public class Dino : MonoBehaviour
             transform.position += Vector3.up * 700;
             rb.simulated = false;
         }
+    }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
         if (collision.gameObject.tag == "Food")
             onGround = true;
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
+
+    private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Food")
             onGround = false;
