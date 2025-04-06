@@ -7,20 +7,19 @@ using UnityEngine;
 using UnityEngine.UI;
 using Random = System.Random;
 
-public class DinoRoom : MonoBehaviour
+public class FlappyDinoRoom : MonoBehaviour
 {
     [SerializeField] ConvergenceChart ConChart;
     [SerializeField] private List<float> convergence;
-    [SerializeField] private Sprite Pterodaktyl;
     [Space]
 
     [SerializeField] private TMP_Text genText;
     [SerializeField] private TMP_Text ScoreText;
-    [SerializeField] private int generation = 0;
-    List<Dino> dinos = new ();
+    private int generation = 0;
+    List<FlappyDino> dinos = new();
     static List<Transform> obstacles = new();
     public static float speed;
-    private int maxScore = 0;
+    private float maxScore = 0;
 
     [Space]
     [SerializeField] private float mutationPower = 0.1f;
@@ -28,9 +27,9 @@ public class DinoRoom : MonoBehaviour
 
     [Space]
     [SerializeField] Transform obstacle;
-    [SerializeField] Dino dinoPrefab;
+    [SerializeField] FlappyDino dinoPrefab;
 
-    Random rnd = new ();
+    Random rnd = new();
 
     public static float NearestObstacleX()
     {
@@ -40,20 +39,20 @@ public class DinoRoom : MonoBehaviour
         return 1000;
     }
 
-    public static float NearestObstacleType()
+    public static float NearestObstacleY()
     {
         if (obstacles.Count > 0)
-            return obstacles.OrderBy(ob => ob.position.x).First().position.y > 100 ? 1 : 0;
+            return obstacles.OrderBy(ob => ob.position.x).First().position.y;
 
         return 1000;
     }
 
     private void Start()
     {
-        for(int i = 0; i < 50; i++)
-            dinos.Add(Instantiate(dinoPrefab, new Vector3(100, 100, 0), Quaternion.identity, transform));
+        for (int i = 0; i < 50; i++)
+            dinos.Add(Instantiate(dinoPrefab, new Vector3(500, 1000, 0), Quaternion.identity, transform));
 
-        foreach (Dino d in dinos)
+        foreach (FlappyDino d in dinos)
             d.GetComponent<Image>().color = new Color((float)rnd.NextDouble(), (float)rnd.NextDouble(), (float)rnd.NextDouble());
 
         Restart();
@@ -73,27 +72,20 @@ public class DinoRoom : MonoBehaviour
 
         obstacles.Clear();
 
-        IEnumerable<Dino> BestDinos = dinos.OrderByDescending(dino => dino.score).Take(dinos.Count / 2);
+        IEnumerable<FlappyDino> BestDinos = dinos.OrderByDescending(dino => dino.score).Take(dinos.Count / 2);
         List<Color> bestColors = BestDinos.Select(d => d.GetComponent<Image>().color).ToList();
         List<NeuralNetwork> bestBrains = BestDinos.Select(d => d.Brain).ToList();
 
         Random rnd = new Random();
         for (int i = 0; i < dinos.Count(); i++)
         {
-            dinos[i].transform.position = new Vector3(100, 100, 0);
-            dinos[i].dead = false;
-            dinos[i].rb.simulated = true;
-            dinos[i].score = 0;
-
             if (i < bestBrains.Count)
-                dinos[i].Brain = bestBrains[i];
+                dinos[i].Revive(bestBrains[i], bestColors.ElementAt(i % bestColors.Count));
             else
-                dinos[i].Brain = bestBrains[i - bestBrains.Count].Mutate(mutationPower, mutationAmount);
-
-            dinos[i].GetComponent<Image>().color = bestColors.ElementAt(i % bestColors.Count);
+                dinos[i].Revive(bestBrains[i - bestBrains.Count].Mutate(mutationPower, mutationAmount), bestColors.ElementAt(i % bestColors.Count));
         }
 
-        speed = 400;
+        speed = 200;
         StopAllCoroutines();
         StartCoroutine(obSpammer());
     }
@@ -103,17 +95,21 @@ public class DinoRoom : MonoBehaviour
         ScoreText.text = "—чет: " + dinos.Max(d => d.score) + "; макс.: " + maxScore;
 
         obstacles = obstacles.Where(ob => !ob.IsDestroyed()).ToList();
-        foreach(Transform ob in obstacles)
+        foreach (Transform ob in obstacles)
         {
             ob.position += Vector3.left * Time.fixedDeltaTime * speed;
             if (ob.transform.position.x <= 0)
             {
                 Destroy(ob.gameObject);
-                foreach (Dino d in dinos)
+                foreach (FlappyDino d in dinos)
                     if (!d.dead)
                         d.score += 5;
             }
         }
+
+        foreach (FlappyDino d in dinos)
+            if (!d.dead)
+                d.score += Time.fixedDeltaTime;
 
         speed += Time.fixedDeltaTime * 1f;
 
@@ -125,14 +121,8 @@ public class DinoRoom : MonoBehaviour
     {
         while (true)
         {
-            if (rnd.Next(2) == 0)
-                obstacles.Add(Instantiate(obstacle, new Vector3(3000, 100, 0), Quaternion.identity, transform));
-            else
-            {
-                Transform tr = Instantiate(obstacle, new Vector3(3000, 200, 0), Quaternion.identity, transform);
-                obstacles.Add(tr);
-                tr.GetComponent<Image>().sprite = Pterodaktyl;
-            }
+            obstacles.Add(Instantiate(obstacle, new Vector3(2000, 200 + rnd.Next((int)((RectTransform)transform).rect.size.y / 2), 0), Quaternion.identity, transform));
+            
             yield return new WaitForSeconds(2);
         }
     }

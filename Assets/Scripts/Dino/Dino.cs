@@ -2,11 +2,8 @@ using UnityEngine;
 
 public class Dino : MonoBehaviour
 {
-    public const float speed = 10;
-    public const float rotateSpeed = 60;
     [SerializeField]
     public NeuralNetwork Brain = new NeuralNetwork(3, 2);
-    [SerializeField]
     private float[] results;
     public int score = 0;
 
@@ -37,16 +34,16 @@ public class Dino : MonoBehaviour
             transform.localScale = Vector3.one;
     }
 
-    private void Update()
-    {
-        //if (Input.GetKey(KeyCode.Space))
-        //    jump();
+    //private void Update()
+    //{
+    //    if (Input.GetKey(KeyCode.Space))
+    //        jump();
 
-        //if (Input.GetKey(KeyCode.S) && onGround)
-        //    transform.localScale = new Vector3(1f, 0.5f, 1f);
-        //else
-        //    transform.localScale = Vector3.one;
-    }
+    //    if (Input.GetKey(KeyCode.S) && onGround)
+    //        transform.localScale = new Vector3(1f, 0.5f, 1f);
+    //    else
+    //        transform.localScale = Vector3.one;
+    //}
 
     private float Lastjumptime = 0;
 
@@ -56,7 +53,6 @@ public class Dino : MonoBehaviour
         {
             rb.AddForce(Vector3.up * 20000);
             Lastjumptime = Time.time;
-            score -= 1;
         }
     }
 
