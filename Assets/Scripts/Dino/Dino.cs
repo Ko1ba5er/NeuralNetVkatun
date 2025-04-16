@@ -1,19 +1,22 @@
 using UnityEngine;
+using UnityEngine.UI;
 
-public class Dino : MonoBehaviour
+public class Dino : NNAgent
 {
-    [SerializeField]
-    public NeuralNetwork Brain = new NeuralNetwork(3, 2);
     private float[] results;
-    public int score = 0;
-
-    public bool dead = false;
     private bool onGround = false;
 
-    public Rigidbody2D rb;
+    private Rigidbody2D rb;
+
+    public override Color color
+    {
+        get => GetComponent<Image>().color;
+        set => GetComponent<Image>().color = value;
+    }
 
     private void Awake()
     {
+        Brain = new NeuralNetwork(3, 2);
         rb = GetComponent<Rigidbody2D>();
     }
 
@@ -72,10 +75,19 @@ public class Dino : MonoBehaviour
             onGround = true;
     }
 
-
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Food")
             onGround = false;
+    }
+
+    public override void Revive(NeuralNetwork brain, Color color)
+    {
+        dead = false;
+        transform.position = Vector3.right * 100 + Vector3.up * 100;
+        rb.simulated = true;
+        score = 0;
+        GetComponent<Image>().color = color;
+        Brain = brain;
     }
 }

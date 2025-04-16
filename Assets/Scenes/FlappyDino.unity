@@ -308,8 +308,8 @@ MonoBehaviour:
   ScoreText: {fileID: 1264799766}
   mutationPower: 0.3
   mutationAmount: 8
+  agentPrefab: {fileID: 1961478296916452154, guid: 02a1a50fbfd17ac4898afa1b61eb8747, type: 3}
   obstacle: {fileID: 25800646862939398, guid: b86c98ac26fac4a46841d6ebbf71c361, type: 3}
-  dinoPrefab: {fileID: 7910955155380906591, guid: 02a1a50fbfd17ac4898afa1b61eb8747, type: 3}
 --- !u!114 &1264799766 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 119225495297502634, guid: 32f129a907043894eb39d3548dc6924b, type: 3}

@@ -15,7 +15,7 @@ public class NeuralNetwork
     public static Random rnd = new();
 
     public readonly int inputAmount = 2;
-    public readonly int[] hiddenAmount = { 3 };
+    public readonly int[] hiddenAmount = { 5, 5 };
     public readonly int outputAmount = 2;
 
     float[] results;
@@ -59,16 +59,11 @@ public class NeuralNetwork
 
     public float[] proccess(params float[] inputs)
     {
-        //StringBuilder sb = new StringBuilder();
-        //sb.Append("inputs: " + inputs.Select(f => f.ToString()).Aggregate((s1, s2) => s1 + " " + s2));
-
         results = new float[inputAmount + 1];
         for (int i = 0; i < inputs.Length; i++)
             results[i] = ActivationFunc.Invoke(inputs[i]);
         
         results[results.Length - 1] = new BiasNeuron().proccess(0);
-        
-        //sb.Append("\nli res: " + results.Select(f => f.ToString()).Aggregate((s1, s2) => s1 + " " + s2));
 
         for (int j = 0; j < hiddenAmount.Length; j++)
         {
@@ -76,30 +71,20 @@ public class NeuralNetwork
             for (int i = 0; i < weights[j].Length; i++)
                 inputs[i % inputs.Length] += weights[j][i] * results[i % results.Length];
 
-            //sb.Append("\nhl" + j + " ins: " + inputs.Select(f => f.ToString()).Aggregate((s1, s2) => s1 + " " + s2));
-
             results = new float[hiddenAmount[j] + 1];
             for (int i = 0; i < inputs.Length; i++)
                 results[i] = ActivationFunc.Invoke(inputs[i]);
 
             results[results.Length - 1] = new BiasNeuron().proccess(0);
-
-            //sb.Append("\nhl" + j + " res: " + results.Select(f => f.ToString()).Aggregate((s1, s2) => s1 + " " + s2));
         }
 
         inputs = new float[outputAmount];
         for (int i = 0; i < weights[hiddenAmount.Length].Length; i++)
             inputs[i % inputs.Length] += weights[hiddenAmount.Length][i] * results[i % results.Length];
 
-        //sb.AppendLine("\nlo ins: " + inputs.Select(f => f.ToString()).Aggregate((s1, s2) => s1 + " " + s2));
-
         results = new float[outputAmount];
         for (int i = 0; i < inputs.Length; i++)
             results[i] = ActivationFunc.Invoke(inputs[i]);
-
-        //sb.AppendLine("out: " + results.Select(f => f.ToString()).Aggregate((s1, s2) => s1 + " " + s2));
-        //sb.AppendLine("weights:\n" + WCs.Select(wc => wc._weights.Select(f => f.ToString()).Aggregate((s1, s2) => s1 + " " + s2)).Aggregate((wc1, wc2) => wc1 + "\n" + wc2));
-        //Debug.Log(sb.ToString());
 
         return results;
     }

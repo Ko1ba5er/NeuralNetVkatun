@@ -1,20 +1,21 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FlappyDino : MonoBehaviour
+public class FlappyDino : NNAgent
 {
     private Rigidbody2D rb;
-
-    [SerializeField]
-    public NeuralNetwork Brain = new NeuralNetwork(4, 1);
     private float[] results;
-    public float score = 0;
 
-    public bool dead = false;
+    public override Color color
+    {
+        get => GetComponent<Image>().color;
+        set => GetComponent<Image>().color = value;
+    }
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();    
+        Brain = new NeuralNetwork(4, 1);
+        rb = GetComponent<Rigidbody2D>();
     }
 
     private void FixedUpdate()
@@ -54,7 +55,7 @@ public class FlappyDino : MonoBehaviour
         }
     }
 
-    public void Revive(NeuralNetwork brain, Color color)
+    public override void Revive(NeuralNetwork brain, Color color)
     {
         dead = false;
         transform.position = Vector3.right * (((RectTransform)transform.parent).rect.size.x / 5) + Vector3.up * (((RectTransform)transform.parent).rect.size.y / 2);

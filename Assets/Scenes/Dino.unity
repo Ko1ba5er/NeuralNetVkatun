@@ -428,14 +428,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ConChart: {fileID: 1966679131}
   convergence: []
-  Pterodaktyl: {fileID: 21300000, guid: bed3c03ed480e5a479ae727967ae8dbc, type: 3}
   genText: {fileID: 1748000678}
   ScoreText: {fileID: 550724280}
-  generation: 0
   mutationPower: 0.05
   mutationAmount: 3
+  agentPrefab: {fileID: 1272313163963625019, guid: 67f5f9b766b0afa45b2e2b0acce3858f, type: 3}
+  Pterodaktyl: {fileID: 21300000, guid: bed3c03ed480e5a479ae727967ae8dbc, type: 3}
   obstacle: {fileID: 8176160117010464308, guid: 4c87f57adf7ee3f439d956f10b9b5f42, type: 3}
-  dinoPrefab: {fileID: 1272313163963625019, guid: 67f5f9b766b0afa45b2e2b0acce3858f, type: 3}
 --- !u!1 &1392262194
 GameObject:
   m_ObjectHideFlags: 0
