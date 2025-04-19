@@ -4,6 +4,11 @@ public class PlatformerRoom : Room
 {
     public float timer;
 
+    private int _finished;
+    public int finished { get => _finished; set { _finished = value; finishedAmount.text = "Кончившие: " + _finished.ToString(); } }
+
+    [SerializeField] private TMPro.TMP_Text finishedAmount;
+
     public override void FixedUpdate()
     {
         base.FixedUpdate();
@@ -15,5 +20,12 @@ public class PlatformerRoom : Room
             timer = 0;
             Restart();
         }
+    }
+
+    protected override void Restart()
+    {
+        finished = 0;
+
+        base.Restart();
     }
 }

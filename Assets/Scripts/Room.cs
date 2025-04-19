@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -14,6 +15,7 @@ public class Room : MonoBehaviour
     [SerializeField] private TMP_Text ScoreText;
     private int generation = 0;
     protected List<NNAgent> agents = new ();
+    public ReadOnlyCollection<NNAgent> Agents => new ReadOnlyCollection<NNAgent>(agents);
     private float maxScore = 0;
 
     [Space]
@@ -25,13 +27,19 @@ public class Room : MonoBehaviour
 
     protected Random rnd = new();
 
-    public virtual void Start()
+    public void Load(string[] brains = null)
     {
         for (int i = 0; i < 50; i++)
             agents.Add(Instantiate(agentPrefab, transform));
 
         foreach (NNAgent d in agents)
             d.color = new Color((float)rnd.NextDouble(), (float)rnd.NextDouble(), (float)rnd.NextDouble());
+
+        if (brains is null)
+            return;
+
+        for (int i = 0; i < brains.Length; i++)
+            agents[i].Revive(new NeuralNetwork(brains[i % agents.Count].Split('*').Select(s => s.Split('_').Where(s => float.TryParse(s, out _)).Select(s1 => float.Parse(s1)).ToArray()).Take(3).ToArray(), agents[i].Brain.inputAmount, agents[i].Brain.outputAmount), agents[i].color);
 
         Restart();
     }
@@ -45,16 +53,20 @@ public class Room : MonoBehaviour
         convergence.Add(agents.Max(agents => agents.score));
         ConChart.UpdateChart(convergence);
 
-        IEnumerable<NNAgent> BestAgents = agents.OrderByDescending(agent => agent.score).Take(agents.Count / 2);
+        List<NNAgent> BestAgents = agents.OrderByDescending(agent => agent.score).ToList().Take(agents.Count / 2).ToList();
         List<Color> bestColors = BestAgents.Select(d => d.color).ToList();
         List<NeuralNetwork> bestBrains = BestAgents.Select(d => d.Brain).ToList();
 
         for (int i = 0; i < agents.Count(); i++)
         {
             if (i < bestBrains.Count)
-                agents[i].Revive(bestBrains[i], bestColors.ElementAt(i % bestColors.Count));
+            {
+                agents[i].Revive(bestBrains[i].Mutate(0, 0), bestColors.ElementAt(i % bestColors.Count));
+            }
             else
+            {
                 agents[i].Revive(bestBrains[i - bestBrains.Count].Mutate(mutationPower, mutationAmount), bestColors.ElementAt(i % bestColors.Count));
+            }
         }
     }
 

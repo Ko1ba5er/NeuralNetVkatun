@@ -42,8 +42,9 @@ public class PlatformerPlayer : NNAgent
 
         for (int i = 0; i < 9; i++)
         {
+            //Дорогой дневник, мне не описать всю туц боль и унижения, которые я испытал сегодня, когда Ботриибмак обозвал меня клоуном на стриме прилюдно(((((((((((
             RaycastHit2D hit;
-            if (hit = Physics2D.Raycast(transform.position + Vector3.up * 0.5f, transform.right * 4 + transform.up * (i - 4)))
+            if (hit = Physics2D.Raycast(transform.position + Vector3.up * 0.5f, transform.right * 4 + transform.up * (i - 4), 100, LayerMask.GetMask("Default")))
             {
                 if (hit.transform.name == "Exit")
                     inputs[i * 2] = 1;
@@ -111,6 +112,7 @@ public class PlatformerPlayer : NNAgent
             transform.position += Vector3.right * 1f;
             rb.simulated = false;
             score += 1000f;
+            FindFirstObjectByType<PlatformerRoom>().finished++;
         }
     }
 
@@ -128,11 +130,13 @@ public class PlatformerPlayer : NNAgent
 
     public override void Revive(NeuralNetwork brain, Color color)
     {
-        dead = false;
+        base.Revive(brain, color);
+
         transform.position = Vector3.right * -7.04f + Vector3.up * 1.78f;
+        dead = false;
         rb.simulated = true;
+        rb.linearVelocity = Vector2.zero;
         score = 0;
         GetComponent<SpriteRenderer>().color = color;
-        Brain = brain;
     }
 }

@@ -5,13 +5,6 @@ using Random = System.Random;
 [Serializable]
 public class NeuralNetwork
 {
-    [Serializable]
-    public class WC
-    {
-        public float[] _weights;
-    }
-    public WC[] WCs;
-
     public static Random rnd = new();
 
     public readonly int inputAmount = 2;
@@ -28,10 +21,6 @@ public class NeuralNetwork
         : this(inputAmount, outputAmount)
     {
         this.weights = weights;
-
-        WCs = new WC[weights.Length];
-        for (int i = 0; i < weights.Length; i++)
-            WCs[i] = new WC() { _weights = weights[i] };
     }
 
     public NeuralNetwork(int inputAmount, int outputAmount)
@@ -51,10 +40,6 @@ public class NeuralNetwork
         for (int i = 0; i < weights.Length; i++)
             for (int j = 0; j < weights[i].Length; j++)
                 weights[i][j] = 0;
-
-        WCs = new WC[weights.Length];
-        for (int i = 0; i < weights.Length; i++)
-            WCs[i] = new WC() { _weights = weights[i] };
     }
 
     public float[] proccess(params float[] inputs)
